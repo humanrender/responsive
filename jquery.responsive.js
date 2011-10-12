@@ -12,8 +12,6 @@
     return this;
   }
   
-  // 820------1024------1240
-  
   r.exit = function(callback){
     this.current_index_to.exits.push(callback);
     return this;
@@ -48,17 +46,15 @@
       }else if(current < width){
         this.next_index = null; this.next = null;
         this.current_index = i; this.current = sorted_ranges[i];
-        this.prev_index = i-1; this.prev = this.range_at(i-1);
+        this.prev_index = i-1; this.prev = sorted_ranges[i-1];
         break;
+      }else if(!prev){
+        this.prev = null; this.prev_index = null;
+        this.current = current; this.current_index = i;
+        this.next =sorted_ranges[i+1] ; this.next_index = i+1;
       }
     }
 
-    //if(!this.next_index){
-    //  this.execute(this.current_index,"exits")
-    //}else if(prev){
-    //  this.execute(this.current_index,"enters")
-    //}
-    
     return this;
   }
   
@@ -67,7 +63,7 @@
   }
   
   r.execute = function(index,action){
-    if(!index) return;
+    if(index == null) return;
     var callbacks = this.range_at(index)[action];
     for(var method in callbacks){
       callbacks[method]();
@@ -98,6 +94,7 @@
     for(var prop in attrs){
       prop = attrs[prop]
       var val = this[prop+"_index"];
+      (val) || (val = this.sorted_ranges.length)
       var index = this[prop+"_index"] = val - 1 < 0 ? null : val-1
       this[prop] = index ? this.sorted_ranges[index] : null
     }
@@ -116,14 +113,11 @@
   
   function on_resize(event){
     var responsive = event.data, width = responsive.window.width();
-    if(width < responsive.current){
-      if(width > responsive.prev){
+    if(width < responsive.current || (!responsive.next && width < responsive.current)){
+      // if(width > responsive.prev)
         responsive.respond("prev")
-      }
-    }else if(responsive.next && width > responsive.next){
-      console.log("next")
-      responsive.respond("next")
-    }else{console.log(responsive.next,responsive.current,width)}
+    }else if(responsive.next && width > responsive.next)
+        responsive.respond("next")
   }
   
   $.responsive = new Responsive();
