@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>Responsive</title>
+  </head>
+
+  <body>
+    <script src="jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="jquery.responsive.js" type="text/javascript" charset="utf-8"></script>
+    
+    <script type="text/javascript" charset="utf-8">
+      $.responsive
+        .from(0,300)
+          .enter(function(){
+            console.log("enters:",0,300)
+          })
+          .exit(function(){
+            console.log("Current width:", $.responsive.window.width())
+            console.log("exits:",0,300)
+          })
+        .from(300,320)
+          .enter(function(){
+            console.log("enters:",240,320)
+          })
+          .exit(function(){
+            console.log("Current width:", $.responsive.window.width())
+            console.log("exits:",240,320)
+          })
+        .from(320,640)
+          .enter(function(){
+            console.log("enters:",320,640)
+          })
+          .exit(function(){
+            console.log("Current width:", $.responsive.window.width())
+            console.log("exits:",320,640)
+          })
+        .from(640,820)
+          .enter(function(){
+            console.log("enters:",640,820)
+          })
+          .exit(function(){
+            console.log("Current width:", $.responsive.window.width())
+            console.log("exits:",640,820)
+          })
+        .from(820,1024)
+          .enter(function(){
+            console.log("enters:",820,1024)
+          })
+          .exit(function(){
+            console.log("Current width:", $.responsive.window.width())
+            console.log("exits:",820,1024)
+          })
+        .from(1024,1100)
+          .enter(function(){
+            console.log("enters:",1024,1240)
+          })
+          .exit(function(){
+            console.log("Current width:", $.responsive.window.width())
+            console.log("exits:",1024,1240)
+          })
+        .start();
+    </script>
+  </body>
+  
+</html>
