@@ -1,64 +1,3 @@
-/*  Default Layout: 992px. 
-    Gutters: 24px.
-    Outer margins: 48px.
-    Leftover space for scrollbars @1024px: 32px.*/
-
-body {
-   width: 80%;
-   padding: 46px 0;
-   color: #999999;
-   margin:0 auto;
-   -webkit-text-size-adjust: 100%; /* Stops Mobile Safari from auto-adjusting font-sizes */
-}
-
-
-
-/*     Tablet Layout: 768px.
-       Gutters: 24px.
-       Outer margins: 28px.
-       Inherits styles from: Default Layout.*/
-
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-   
-   body {
-       width: 712px;
-       padding: 48px 28px 60px;
-   }
-}
-
-
-
-/*     Mobile Layout: 320px.
-       Gutters: 24px.
-       Outer margins: 34px.
-       Inherits styles from: Default Layout.
-*/
-
-@media only screen and (max-width: 767px) {
-   
-   body {
-       width: 252px;
-       padding: 48px 34px 60px;
-   }
-   
-}
-
-
-
-/*     Wide Mobile Layout: 480px.
-       Gutters: 24px.
-       Outer margins: 22px.
-       Inherits styles from: Default Layout, Mobile Layout.*/
-
-@media only screen and (min-width: 480px) and (max-width: 767px) {
-   
-   body {
-       width: 436px;
-       padding: 36px 22px 48px;
-   }
-   
-}
-
 /* Prettifiers */
 
 /* Lifted corners */
@@ -137,7 +76,7 @@ h1, h2{
   
 }
 
-h1 + small, #description, #methods, .box_content {
+h1 + small, #description, #methods, .box_content, #footer {
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
 }
 
@@ -172,6 +111,7 @@ h1 + small{
 }
 
 h2{
+  font-size:22px;
   text-shadow: #95DCDC 1px 1px 0;
   padding-left:20px;
   padding-top:78px;
@@ -226,8 +166,6 @@ h3 .argument, #methods dfn{
 .console samp{
   padding:7px 20px;
   display:block;
-  
-  overflow:auto;
   margin-bottom:7px;
 }
 
@@ -243,20 +181,124 @@ h3 .argument, #methods dfn{
   color: #0066CC;
 }
 
-.console, .gist_container{
+.console, .gist_container, .download, .issues_collaboration{
   float: left;
   width:48%;
 }
 
 .console{
   margin-right:2%;
-  max-height:626px;
-  min-height:626px;
+  max-height:510px;
+  min-height:510px;
+  overflow:auto;
+  padding-bottom:7px;
+}
+
+.gist_container, .issues_collaboration{
+  margin-left:2%;
+}
+
+.download, .console{
+  margin-right:2%;
 }
 
 .gist_container{
-  margin-left:2%;
   margin-top:32px;
-/*  max-height:239px;*/
-/*  min-height:239px;*/
+  font-size:12px;
+}
+
+#footer{
+  padding-top:80px;
+  clear:both;
+  font-size:12px;
+}
+
+#footer p{
+  padding-top:9px;
+  padding-bottom:9px;
+  text-align:center;
+  color:#fff;
+  border-top:1px solid white;
+}
+
+#footer a{
+  color:#003366;
+}
+
+/*  Default Layout: 992px. 
+    Gutters: 24px.
+    Outer margins: 48px.
+    Leftover space for scrollbars @1024px: 32px.*/
+
+body {
+   width: 80%;
+   padding: 46px 0;
+   color: #999999;
+   margin:0 auto;
+   -webkit-text-size-adjust: 100%; /* Stops Mobile Safari from auto-adjusting font-sizes */
+}
+
+
+
+/*     Tablet Layout: 768px.
+       Gutters: 24px.
+       Outer margins: 28px.
+       Inherits styles from: Default Layout.*/
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+   
+   body {
+       width: 712px;
+       padding: 48px 28px 60px;
+   }
+
+   .console {
+     max-height:540px;
+     min-height:540px;
+   }
+
+}
+
+
+
+/*     Mobile Layout: 320px.
+       Gutters: 24px.
+       Outer margins: 34px.
+       Inherits styles from: Default Layout.
+*/
+
+@media only screen and (max-width: 767px) {
+   
+   body {
+       width: 252px;
+       padding: 48px 34px 60px;
+   }
+   
+   h2{
+     font-size:18px !important;
+/*     padding-left:0px !important;*/
+   }
+   
+   .download h2{
+     height:39px;
+   }
+   
+}
+
+
+
+/*     Wide Mobile Layout: 480px.
+       Gutters: 24px.
+       Outer margins: 22px.
+       Inherits styles from: Default Layout, Mobile Layout.*/
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+   
+   body {
+       width: 436px;
+       padding: 36px 22px 48px;
+   }
+   
+   
+   
 }
