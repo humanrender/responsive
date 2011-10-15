@@ -13,55 +13,28 @@
     <script src="jquery.responsive.js" type="text/javascript" charset="utf-8"></script>
     
     <script type="text/javascript" charset="utf-8">
-      $.responsive
+      function log(from,to,window_width,action){
+        console.log(action,from,to," Current width:",window_width)
+      }
+      $.responsive()
         .from(0,500)
-          .enter(function(){
-            console.log("enters:",0,500)
-          })
-          .exit(function(){
-            console.log("exits:",0,500)
-            console.log("Current width:", $.responsive.window.width())
-          })
+          .enter(log)
+          .exit(log)
         .from(500,640)
-          .enter(function(){
-            console.log("enters:",500,640)
-          })
-          .exit(function(){
-            console.log("exits:",500,640)
-            console.log("Current width:", $.responsive.window.width())
-          })
+          .enter(log)
+          .exit(log)
         .from(640,720)
-          .enter(function(){
-            console.log("enters:",640,720)
-          })
-          .exit(function(){
-            console.log("exits:",640,720)
-            console.log("Current width:", $.responsive.window.width())
-          })
+          .enter(log)
+          .exit(log)
         .from(720,820)
-          .enter(function(){
-            console.log("enters:",720,820)
-          })
-          .exit(function(){
-            console.log("exits:",720,820)
-            console.log("Current width:", $.responsive.window.width())
-          })
+          .enter(log)
+          .exit(log)
         .from(820,1024)
-          .enter(function(){
-            console.log("enters:",820,1024)
-          })
-          .exit(function(){
-            console.log("exits:",820,1024)
-            console.log("Current width:", $.responsive.window.width())
-          })
+          .enter(log)
+          .exit(log)
         .from(1024,1100)
-          .enter(function(){
-            console.log("enters:",1024,1100)
-          })
-          .exit(function(){
-            console.log("exits:",1024,1100)
-            console.log("Current width:", $.responsive.window.width())          
-          })
+          .enter(log)
+          .exit(log)
         .start();
     </script>
   </body>

@@ -1,125 +1,206 @@
 (function($,window,document,undefined){
-
+  
+  var _r , _range;
+  
   function Responsive(){
-    this.ranges = {};
-    this.resizes = [];    
-    this.window = $(window);
+    this.ranges = new Ranges();
+    this.engine = new ResponsiveEngine();    
   }
   
-  (r = Responsive.prototype).from = function($from, $to){
-    this.current_index_from = this.ranges[$from] || (this.ranges[$from] = {enters:[],exits:[]});
-    this.current_index_to =  this.ranges[$to] || ( this.ranges[$to] = {enters:[],exits:[]});
-    return this;
+  Responsive.STATES = {
+    ENTERS:"enters",
+    EXITS:"exits"
   }
   
-  r.exit = function(callback){
-    this.current_index_to.exits.push(callback);
-    return this;
-  }
-  
-  r.enter = function(callback){
-    this.current_index_from.enters.push(callback);
-    return this;
-  }
-  
-  r.window = function(callback){
-    this.resizes.push(callback);
-    return this;
-  }
-  
-  r.start = function(options){
-    var min = 0, max = -1, r,
-      width = this.window.bind("resize",this,on_resize).width(), sorted_ranges = [], ranges_length;
-    for (var resolution in this.ranges)
-      sorted_ranges.push(Number(resolution))
-    ranges_length = sorted_ranges.length
-    this.sorted_ranges = sorted_ranges.sort(function(a,b){return a > b})
+  function ResponsiveEngine(){
+    var window_width = 0, self = this, ranges, sorted_ranges, ranges_length,
+      next, prev, current;
     
-    for(var i = ranges_length - 1; i >= 0; i--){
-      var current = sorted_ranges[i], prev = sorted_ranges[i-1];
-      if(current > width && prev < width){
-        this.next = sorted_ranges[(this.next_index = i)]
-        this.current = sorted_ranges[(this.current_index = i-1)];
-        this.prev_index = i-2 < 0 ? null : i-2; 
-        this.prev = this.prev_index == null ? null : sorted_ranges[this.prev_index];
-        break;
-      }else if(current < width){
-        this.next_index = null; this.next = null;
-        this.current_index = i; this.current = sorted_ranges[i];
-        this.prev_index = i-1; this.prev = sorted_ranges[i-1];
-        break;
-      }else if(!prev){
-        this.prev = null; this.prev_index = null;
-        this.current = current; this.current_index = i;
-        this.next =sorted_ranges[i+1] ; this.next_index = i+1;
+    this.start = function($ranges,$window){
+      window = $($window);
+      window_width = window.width();
+      ranges = $ranges;
+      sorted_ranges = ranges.sort();
+      ranges_length = sorted_ranges.length;
+      
+      current = this.get_current();
+      this.set_current_state();
+      
+      window.bind("resize", this.on_resize);
+    }
+    
+    this.set_current_state = function(){
+      if(!current){
+        if(ranges.min > window_width){
+          ranges.before_first();
+          (next = ranges.get_next()).exits(window_width);
+        }else{
+          ranges.after_last();
+          (prev = ranges.get_prev()).exits(window_width);
+        }
+      }else{
+        next = ranges.get_next(); if(next) next.exits(window_width);
+        prev = ranges.get_prev(); current.enters(window_width);
       }
     }
-
-    return this;
-  }
-  
-  r.stop = function(){
+    
+    this.get_current = function(){
+      return ranges.next_until(function(current){
+        return current.from < window_width && current.to > window_width
+      })
+    }
+    
+    this.on_resize = function(event){
+      window_width = window.width();
+      var oversize = window_width > ranges.max, undersize = window_width < ranges.min
+      // console.log(current,prev,next,undersize,oversize,window_width,ranges.min)
+      if(!current){
+        if(prev && prev.to > window_width){
+          ranges.prev();
+          set_indexes();
+          current.enters(window_width);
+        }else if(next && next.from < window_width){
+          ranges.next();
+          set_indexes();
+          current.enters(window_width);
+        }
+      }else if(!undersize && window_width < current.from){
+        current.exits(window_width);
+        ranges.prev();
+        set_indexes();
+        if(current) current.enters(window_width);
+      }else if(!oversize && window_width > current.to){
+        current.exits(window_width);
+        next.enters(window_width);
+        ranges.next();
+        set_indexes()
+      }else if(oversize && current){
+        current.exits(window_width);
+        ranges.next();
+        set_indexes();
+      }else if(undersize && current){
+        current.exits(window_width);
+        ranges.prev();
+        set_indexes();
+      }
+    }
+    
+    function set_indexes(){
+      current = ranges.current(); next = ranges.get_next(); prev = ranges.get_prev();
+    }
     
   }
   
-  r.execute = function(index,action){
-    if(index == null) return;
-    var callbacks = this.range_at(index)[action];
-    for(var method in callbacks){
-      callbacks[method]();
-    }
-  }
-  
-  r.range_at = function(index){
-    return this.ranges[this.sorted_ranges[index]];
-  }
-  
-  r.respond = function(action){
-    switch(action){
-      case "next":
-        var next_index = this.next_index;
-        this.step_next(["current","prev","next"]);
-        this.execute(next_index,"enters");
-        this.execute(this.current_index,"exits");
-        break;
-      case "prev":
-        this.execute(this.prev_index,"enters");
-        this.execute(this.next_index,"exits");
-        this.step_prev(["current","prev","next"])
-        break;
-    }
-  }
-  
-  r.step_prev = function(attrs){
-    for(var prop in attrs){
-      prop = attrs[prop]
-      var val = this[prop+"_index"];
-      (val) || (val = this.sorted_ranges.length)
-      var index = this[prop+"_index"] = val - 1 < 0 ? null : val-1
-      this[prop] = index ? this.sorted_ranges[index] : null
+  function Ranges(){
+    var current_range, ranges = [], index = 0, total_ranges = 0;
+    
+    this.from = function(from,to){
+      if(this.min == undefined || this.min > from) this.min = from;
+      if(this.max  == undefined || this.max < to) this.max = to;
+      current_range = new Range(from,to);
+      total_ranges++;
+      ranges.push(current_range);     
     }
     
-  }
-  
-  r.step_next = function(attrs){
-    var l = this.sorted_ranges.length;
-    for(var prop in attrs){
-      prop = attrs[prop]
-      var val = this[prop+"_index"];
-      var index = this[prop+"_index"] = val + 1 >= l ? null : val+1
-      this[prop] = index ? this.sorted_ranges[index] : null
+    this.index = function(){
+      return index;
     }
+    
+    this.current_range = function(){ return current_range; }
+    
+    this.enter = function(){
+      current_range.add_callback.call(current_range,arguments,Responsive.STATES.ENTERS);
+    }
+    
+    this.exit = function(){
+      current_range.add_callback.call(current_range,arguments,Responsive.STATES.EXITS);
+    }
+    
+    this.sort = function(){
+      ranges = ranges.sort(function(a,b){return a.from > b.from || a.to > b.to})
+      return ranges
+    }
+    
+    this.has_next = function(){ return index < ranges.length; }
+    this.has_prev = function(){ return index < 0; }
+    this.current = function(){ return ranges[index] }
+    
+    this.next = function(){
+      return ranges[++index];
+    }
+    
+    this.prev = function(){
+      return ranges[--index];
+    }
+    
+    this.next_until = function(callback){
+      var current,_current;
+      _current = this.current();
+      do{
+        if(callback(_current)){
+          current = _current;
+          break;
+        }
+        _current = this.next();
+      }while(this.has_next())
+      return current;
+    }
+    
+    this.is_before_first = function(){ return index < 0 }
+    this.before_first = function(){ index = -1 }
+    this.is_after_last = function(){ return index >= total_ranges }
+    this.after_last = function(){ index = total_ranges }
+    this.get_next = function() { return ranges[index+1] }
+    this.get_prev = function() { return ranges[index-1] }
   }
   
-  function on_resize(event){
-    var responsive = event.data, width = responsive.window.width();
-    if(width < responsive.current || (!responsive.next && width < responsive.current)){
-      // if(width > responsive.prev)
-        responsive.respond("prev")
-    }else if(responsive.next && width > responsive.next)
-        responsive.respond("next")
+  function Range(min,max){
+    this.from = min; this.to = max;
+    this.callbacks = {};
   }
   
-  $.responsive = new Responsive();
+  _range = Range.prototype, _r = Responsive.prototype;
+  _range.add_callback = function(args,kind){
+    var callbacks = (this.callbacks[kind]) || (this.callbacks[kind] = [])
+    for(var arg in args){
+      arg = args[arg];
+      switch(typeof arg){
+        case "function":
+          callbacks.push(arg)
+          break;
+      }
+    }  
+  }
+  
+  _range.toString = function(){
+    return  "("+this.from+"..."+this.to+")"
+  }
+  
+  _range.execute = function(kind,window_width){
+    var _callbacks = this.callbacks[kind];
+    if(!_callbacks) return
+    for(var method in _callbacks)
+      _callbacks[method](this.from,this.to,window_width,kind);
+  }
+  
+  for(var _state in Responsive.STATES){;
+    (function(){
+      var state = Responsive.STATES[_state];
+      _range[state] = function(window_width){
+        this.execute(state,window_width)
+      }
+    })()
+  }
+  
 
+  _r.from = function(from, to){ this.ranges.from(from, to); return this; }
+  _r.enter = function(){ this.ranges.enter.apply(this.ranges,arguments); return this; }
+  _r.exit = function(){ this.ranges.exit.apply(this.ranges,arguments); return this; }
+  _r.start = function(){ this.engine.start(this.ranges,window); return this; }
+  
+  var instance;
+  $.responsive = function(){
+    if(!instance) instance = new Responsive();
+    return instance;
+  }
 })(jQuery,window,document)
