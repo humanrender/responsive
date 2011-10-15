@@ -164,9 +164,13 @@ h3 .argument, #methods dfn{
 }
 
 .console samp{
-  padding:7px 20px;
+  padding:0 20px 7px;
   display:block;
   margin-bottom:7px;
+}
+
+.console samp span {
+  line-height:32px;
 }
 
 .console .range{
@@ -188,10 +192,15 @@ h3 .argument, #methods dfn{
 
 .console{
   margin-right:2%;
+  padding-bottom:7px;
+  background: url('../images/bg-sheet.jpg') repeat;
+  
+}
+
+.console samp{
+  overflow:auto;
   max-height:510px;
   min-height:510px;
-  overflow:auto;
-  padding-bottom:7px;
 }
 
 .gist_container, .issues_collaboration{
@@ -252,7 +261,7 @@ body {
        padding: 48px 28px 60px;
    }
 
-   .console {
+   .console samp {
      max-height:540px;
      min-height:540px;
    }
@@ -281,6 +290,18 @@ body {
    
    .download h2{
      height:39px;
+   }
+   
+   .download{
+     float:none;
+     margin-right:0;
+     width:100%;
+   }
+   
+   .issues_collaboration{
+     float:none;
+     margin-left:0;
+     width:100%;
    }
    
 }
