@@ -52,8 +52,7 @@
     
     this.on_resize = function(event){
       window_width = window.width();
-      var oversize = window_width > ranges.max, undersize = window_width < ranges.min
-      // console.log(current,prev,next,undersize,oversize,window_width,ranges.min)
+      var oversize = window_width > ranges.max, undersize = window_width < ranges.min;
       if(!current){
         if(prev && prev.to > window_width){
           ranges.prev();
@@ -94,10 +93,10 @@
   function Ranges(){
     var current_range, ranges = [], index = 0, total_ranges = 0;
     
-    this.from = function(from,to){
+    this.from = function(from,to,key){
       if(this.min == undefined || this.min > from) this.min = from;
       if(this.max  == undefined || this.max < to) this.max = to;
-      current_range = new Range(from,to);
+      current_range = new Range(from,to,key);
       total_ranges++;
       ranges.push(current_range);     
     }
@@ -154,9 +153,10 @@
     this.get_prev = function() { return ranges[index-1] }
   }
   
-  function Range(min,max){
+  function Range(min,max,key){
     this.from = min; this.to = max;
     this.callbacks = {};
+    this.key = (key) || (null);
   }
   
   _range = Range.prototype, _r = Responsive.prototype;
@@ -180,7 +180,7 @@
     var _callbacks = this.callbacks[kind];
     if(!_callbacks) return
     for(var method in _callbacks)
-      _callbacks[method](this.from,this.to,window_width,kind);
+      _callbacks[method](this.from,this.to,window_width,kind,this.key);
   }
   
   for(var _state in Responsive.STATES){;
@@ -193,7 +193,7 @@
   }
   
 
-  _r.from = function(from, to){ this.ranges.from(from, to); return this; }
+  _r.from = function(from, to, key){ this.ranges.from(from, to, key); return this; }
   _r.enter = function(){ this.ranges.enter.apply(this.ranges,arguments); return this; }
   _r.exit = function(){ this.ranges.exit.apply(this.ranges,arguments); return this; }
   _r.start = function(){ this.engine.start(this.ranges,window); return this; }

@@ -13,26 +13,26 @@
     <script src="jquery.responsive.js" type="text/javascript" charset="utf-8"></script>
     
     <script type="text/javascript" charset="utf-8">
-      function log(from,to,window_width,action){
-        console.log(action,from,to," Current width:",window_width)
+      function log(from,to,window_width,action,key){
+        console.log(action,(key || ""),from,to," Current width:",window_width)
       }
       $.responsive()
-        .from(0,500)
+        .from(0,500,"tiny")
           .enter(log)
           .exit(log)
-        .from(500,640)
+        .from(500,640,"small")
           .enter(log)
           .exit(log)
-        .from(640,720)
+        .from(640,720,"normal")
           .enter(log)
           .exit(log)
         .from(720,820)
           .enter(log)
           .exit(log)
-        .from(820,1024)
+        .from(820,1024,"big")
           .enter(log)
           .exit(log)
-        .from(1024,1100)
+        .from(1024,1100,"xbig")
           .enter(log)
           .exit(log)
         .start();
