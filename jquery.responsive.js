@@ -55,36 +55,30 @@
     }
     
     this.on_resize = function(event){
-      window_width = window.width();
-      var oversize = window_width > ranges.max, undersize = window_width < ranges.min;
+      window_width = window.width(); var p;
       if(!current){
-        if(prev && prev.to > window_width){
-          ranges.prev();
-          set_indexes();
-          current.enters(window_width);
-        }else if(next && next.from < window_width){
-          ranges.next();
+        if((p = prev && prev.to > window_width) || (next && next.from < window_width)){
+          ranges[p ? "prev" : "next"]()
           set_indexes();
           current.enters(window_width);
         }
-      }else if(!undersize && window_width < current.from){
-        current.exits(window_width);
-        ranges.prev();
-        set_indexes();
-        if(current) current.enters(window_width);
-      }else if(!oversize && window_width > current.to){
-        current.exits(window_width);
-        next.enters(window_width);
-        ranges.next();
-        set_indexes()
-      }else if(oversize && current){
-        current.exits(window_width);
-        ranges.next();
-        set_indexes();
-      }else if(undersize && current){
-        current.exits(window_width);
-        ranges.prev();
-        set_indexes();
+      }else{
+        var oversize = window_width > ranges.max, undersize = window_width < ranges.min;
+        if(!undersize && window_width < current.from){
+          current.exits(window_width);
+          ranges.prev();
+          set_indexes();
+          if(current) current.enters(window_width);
+        }else if(!oversize && window_width > current.to){
+          current.exits(window_width);
+          next.enters(window_width);
+          ranges.next();
+          set_indexes()
+        }else if((p = oversize) || (undersize)){
+          current.exits(window_width);
+          ranges[p ? "next" : "prev"]();
+          set_indexes();
+        }
       }
     }
     

@@ -21,7 +21,7 @@
         console.log(action,(key || ""),from,to," Current width:",window_width)
       }
       $.responsive()
-        .from(0,500,"tiny")
+        .from(450,500,"tiny")
           .enter(log)
           .exit(log)
         .from(500,640,"small")
@@ -36,7 +36,7 @@
         .from(820,1024,"big")
           .enter(log)
           .exit(log)
-        .from(1024,1100,"xbig")
+        .from(1024,1050,"xbig")
           .enter(log)
           .exit(log)
         .start();
