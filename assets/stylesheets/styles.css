@@ -63,11 +63,6 @@ body {
 
 /* Lifted corners */
 
-.lifted {
-    -moz-border-radius:4px; 
-         border-radius:4px;
-}
-
 .lifted:before,
 .lifted:after { 
     bottom:15px;
@@ -97,12 +92,19 @@ body {
 
 .drop-shadow {
     position:relative;
-    padding:1em 0; 
-    margin:2em 0 4em; 
+    margin:32px 0 0 0; 
     background:#fff;
     -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
        -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
             box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.drop-shadow a{
+  color:#003366;
+}
+
+.drop-shadow + .drop-shadow{
+  margin-top:53px;
 }
 
 .drop-shadow:before,
@@ -111,12 +113,6 @@ body {
     position:absolute; 
     z-index:-2;
 }
-
-.drop-shadow p {
-    font-size:16px;
-    font-weight:bold;
-}
-
 
 .accessible{
   display:none!important;
@@ -141,8 +137,12 @@ h1, h2{
   
 }
 
-h1 + small, #description {
+h1 + small, #description, #methods, .box_content {
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+}
+
+h3, .methods dfn{
+  font-family: 'Courier New','Courier',monospace;
 }
 
 h1, h1 + small{
@@ -175,12 +175,88 @@ h2{
   text-shadow: #95DCDC 1px 1px 0;
   padding-left:20px;
   padding-top:78px;
+  text-transform:uppercase;
+  clear:both;
 }
 
 .box{
   width:100%;
 }
 
-#methods li{
+.methods li{
   list-style: none;
+  color:#999;
+  font-size:15px;
+  font-weight:normal;
+}
+
+h3{
+  display:block;
+  background-color:#003366;
+  color:#fff;
+  font-size:19px;
+  padding:20px;
+}
+
+h3 .argument, #methods dfn{
+  color:#FF0000;
+}
+
+.box_content{
+  padding:27px 20px;
+}
+
+.methods dfn{
+  display:block;
+  padding-top:18px;
+  font-style:normal;
+  font-weight:bold;
+  font-size:19px;
+}
+
+.methods .object_type{
+  color:#999999;
+  font-size:15px;
+}
+
+.download p, .issues_collaboration p{
+  padding-bottom:13px;
+}
+
+.console samp{
+  padding:7px 20px;
+  display:block;
+  
+  overflow:auto;
+  margin-bottom:7px;
+}
+
+.console .range{
+  color:#CC3300;
+}
+
+.console .action{
+  color: #999999;
+}
+
+.console .label{
+  color: #0066CC;
+}
+
+.console, .gist_container{
+  float: left;
+  width:48%;
+}
+
+.console{
+  margin-right:2%;
+  max-height:626px;
+  min-height:626px;
+}
+
+.gist_container{
+  margin-left:2%;
+  margin-top:32px;
+/*  max-height:239px;*/
+/*  min-height:239px;*/
 }
