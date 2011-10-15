@@ -29,6 +29,10 @@
       window.bind("resize", this.on_resize);
     }
     
+    this.stop = function(){
+      window.unbind("resize", this.on_resize)
+    }
+    
     this.set_current_state = function(){
       if(!current){
         if(ranges.min > window_width){
@@ -197,6 +201,7 @@
   _r.enter = function(){ this.ranges.enter.apply(this.ranges,arguments); return this; }
   _r.exit = function(){ this.ranges.exit.apply(this.ranges,arguments); return this; }
   _r.start = function(){ this.engine.start(this.ranges,window); return this; }
+  _r.stop = function(){ this.engine.stop(); return this; }
   
   var instance;
   $.responsive = function(){

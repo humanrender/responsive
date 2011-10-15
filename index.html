@@ -9,6 +9,10 @@
   </head>
 
   <body>
+
+    <button class="stop">Stop</button>
+    <button class="start">Start</button>
+
     <script src="jquery.js" type="text/javascript" charset="utf-8"></script>
     <script src="jquery.responsive.js" type="text/javascript" charset="utf-8"></script>
     
@@ -36,6 +40,10 @@
           .enter(log)
           .exit(log)
         .start();
+      
+      $(".stop").click(function(){ $.responsive().stop() })
+      $(".start").click(function(){ $.responsive().start() })
+      
     </script>
   </body>
   
