@@ -159,6 +159,7 @@
   
   _range = Range.prototype, _r = Responsive.prototype;
   _range.add_callback = function(args,kind){
+    args = Array.prototype.slice.call(args);
     var callbacks = (this.callbacks[kind]) || (this.callbacks[kind] = [])
     for(var arg in args){
       arg = args[arg];
