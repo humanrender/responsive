@@ -80,7 +80,7 @@ h1 + small, #description, #methods, .box_content, #footer {
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
 }
 
-h3, .methods dfn{
+h3, .methods dfn, .arguments dt{
   font-family: 'Courier New','Courier',monospace;
 }
 
@@ -232,6 +232,24 @@ h3 .argument, #methods dfn{
 
 #footer a{
   color:#003366;
+}
+
+.arguments{
+  padding-top:10px;
+  padding-left:10px;
+}
+
+.arguments dt{
+  font-weight:bold;
+  color:#666;
+}
+
+.arguments span{
+  font-wight:normal;
+}
+
+.arguments dd + dt{
+  margin-top:8px;
 }
 
 /*  Default Layout: 992px. 

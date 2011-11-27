@@ -29,22 +29,65 @@
     <h2>Methods</h2>
     <ul id="methods" class="methods">
       <li class="box drop-shadow lifted">
-        <h3 id="$responsive"><code>$.responsive</code></h3>
+        <h3 id="$responsive"><code>$.responsive()</code></h3>
         <div class="box_content">
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+          <p>Instantiate responsive-js.</p>
         </div>
       </li>
       <li class="box drop-shadow lifted">
-        <h3 id="$reponsive_from"><code>$.responsive.from( <span class="argument">from</span>, <span class="argument">to</span>, <span class="argument">key</span> )</code></h3>
+        <h3 id="$responsive_from"><code>$.responsive().from( <span class="argument">from</span>, <span class="argument">to</span>, <span class="argument">key</span> )</code></h3>
         <div class="box_content">
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+          <p>Specifies a range. After specifying a range you can start adding callbacks with the <a href="#$responsive_enter">$.responsive().enter()</a> and <a href="#$responsive_exit">$.responsive().exit()</a> methods.</p>
+          <p>Is recommended to set ranges from lowest to greatest and to avoid overlapping ranges. </p>
           <h4 class="accessible">Arguments</h4>
-          <dfn title="from">from <span class="object_type">(string or object)</span></dfn>
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
-          <dfn title="to">to <span class="object_type">(string or object)</span></dfn>
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
-          <dfn title="key">key <span class="object_type">(string)</span></dfn>
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
+          <dfn title="from">from <span class="object_type">(integer)</span></dfn>
+          <p>Lowest window width in range.</p>
+          <dfn title="to">to <span class="object_type">(string)</span></dfn>
+          <p>Hightest window width in range.</p>
+          <dfn title="key">key <span class="object_type">(string)<em>optional</em></span></dfn>
+          <p>Range identifier. This identifier will be passed as an argument on each callback.</p>
+        </div>
+      </li>
+      <li class="box drop-shadow lifted">
+        <h3 id="$responsive_enter"><code>$.responsive().enter( <span class="argument">callback</span> )</code></h3>
+        <div class="box_content">
+          <p>Sets a callback function to be executed whenever the window width is between the current range </p>
+          <h4 class="accessible">Arguments</h4>
+          <dfn title="from">callback <span class="object_type">(function)</span></dfn>
+          <p>Callback function. Will be called with four arguments: </p>
+          <dl class="arguments">
+            <dt>from <span class="object_type">(integer)</span></dt>
+            <dd>Lowest window width in current range.</dd>
+            <dt>to <span class="object_type">(integer)</span></dt>
+            <dd>Highest window width in current range.</dd>
+            <dt>window_width <span class="object_type">(integer)</span></dt>
+            <dd>Current window width.</dd>
+            <dt>kind <span class="object_type">(string)</span></dt>
+            <dd>Either this is an "enter" or "exit" event.</dd>
+            <dt>key <span class="object_type">(string)</span></dt>
+            <dd>String identifier of current range. If no identifier was given when calling the <a href="#$responsive_from">$.responsive().from()</a> method, this argument will be undefined.</dd>
+          </dl>
+        </div>
+      </li>
+      <li class="box drop-shadow lifted">
+        <h3 id="$responsive_exit"><code>$.responsive().exit( <span class="argument">callback</span> )</code></h3>
+        <div class="box_content">
+          <p>Sets a callback function to be executed when the window width is no longer in range.</p>
+          <h4 class="accessible">Arguments</h4>
+          <dfn title="from">callback <span class="object_type">(function)</span></dfn>
+          <p>Will be called with four arguments: </p>
+          <dl class="arguments">
+            <dt>from <span class="object_type">(integer)</span></dt>
+            <dd>Lowest window width in current range.</dd>
+            <dt>to <span class="object_type">(integer)</span></dt>
+            <dd>Highest window width in current range.</dd>
+            <dt>window_width <span class="object_type">(integer)</span></dt>
+            <dd>Current window width.</dd>
+            <dt>kind <span class="object_type">(string)</span></dt>
+            <dd>Either this is an "enter" or "exit" event.</dd>
+            <dt>key <span class="object_type">(integer)</span></dt>
+            <dd>String identifier of current range. If no identifier was given when calling the <a href="#$responsive_from">$.responsive().from()</a> method, this argument will be undefined.</dd>
+          </dl>
         </div>
       </li>
     </ul>
@@ -52,9 +95,9 @@
       <h2>Download</h2>
       <div id="download" class="lifted drop-shadow">
         <div class="box_content">
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
-          <a href="#">Download .min version (4kb)</a><br/>
-          <a href="#">Download uncompressed version (8kb)</a>
+          <p>Start using responsive-js right now!</p>
+          <a href="assets/javascripts/jquery.responsive.min.js">Download .min version (4kb)</a><br/>
+          <a href="assets/javascripts/jquery.responsive.js">Download uncompressed version (8kb)</a>
         </div>
       </div>
     </div>
@@ -62,9 +105,7 @@
       <h2>Issues , Collaboration</h2>
       <div id="issues_collaboration" class="lifted drop-shadow">
         <div class="box_content">
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
-          <a href="#">Download .min version (4kb)</a><br/>
-          <a href="#">Download uncompressed version (8kb)</a>
+          <p>Fork us or report <a href="https://github.com/humanrender/responsive/issues">issues</a> at our <a href="https://github.com/humanrender/responsive">github page</a>.</p>
         </div>
       </div>
     </div>
@@ -72,7 +113,7 @@
       <p>Responsive.js is a project by <a href="http://github.com/humanrender">humanreder</a> in collaboration with <a href="http://github.com/vieron">vieron</a></p>
     </div>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-    <script src="assets/javascripts/jquery.responsive.js" type="text/javascript" charset="utf-8"></script>
+    <script src="assets/javascripts/jquery.responsive.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="assets/javascripts/main.js" type="text/javascript" charset="utf-8"></script>
     
   </body>
